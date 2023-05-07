@@ -5,3 +5,5 @@
 
 kubectl delete -f deployment.yaml
 kubectl apply -f deployment.yaml
+
+kubectl get pods -w
