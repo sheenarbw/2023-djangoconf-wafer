@@ -1,0 +1,112 @@
+# For more info about Pods see:
+#   https://cloud.google.com/container-engine/docs/pods/
+# For more info about Deployments:
+#   https://kubernetes.io/docs/user-guide/deployments/
+
+# apiVersion: extensions/v1beta1
+apiVersion: apps/v1
+
+kind: Deployment
+metadata:
+  name: djangoconf-wafer
+  labels:
+    app: djangoconf-wafer
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: djangoconf-wafer
+  template:
+    metadata:
+      labels:
+        app: djangoconf-wafer
+    spec:
+      containers:
+        - name: djangoconf-wafer-app
+          # Replace  with your project ID or use `make template`
+          image: gcr.io/umuzi-prod/djangoconf-wafer:latest
+          # This setting makes nodes pull the docker image every time before
+          # starting the pod. This is useful when debugging, but should be turned
+          # off in production.
+          imagePullPolicy: Always
+          env:
+            # [START cloudsql_secrets]
+            - name: SQL_USER
+              valueFrom:
+                secretKeyRef:
+                  name: cloudsql-djangoconf2023-wafer 
+                  key: SQL_USER
+            - name: SQL_PASS
+              valueFrom:
+                secretKeyRef:
+                  name: cloudsql-djangoconf2023-wafer 
+                  key: SQL_PASS
+
+            - name: SQL_DB
+              value: djangoconf2023_wafer
+            - name: SQL_PORT
+              value: "5432"
+
+
+
+            # [START git misc config]
+
+            - name: STATIC_URL
+              value: https://storage.googleapis.com/djangoconf-wafer-collectstatic/static/
+            - name: PROD_MODE
+              value: "1"
+            - name: PROD_SECRET_KEY
+              valueFrom:
+                secretKeyRef:
+                  name: miscbackend-djangoconf2023-wafer 
+                  key: PROD_SECRET_KEY
+
+            - name: SQL_CONNECTION_NAME
+              value: umuzi-prod:europe-west2:prod
+            
+
+          ports:
+            - containerPort: 8000
+
+          readinessProbe:
+            # an http probe
+            httpGet:
+              # path: /readiness
+              path: /
+              port: 8000
+            initialDelaySeconds: 10
+            timeoutSeconds: 5
+
+        # [START proxy_container]
+        - image: gcr.io/cloudsql-docker/gce-proxy:1.16
+          name: cloudsql-proxy
+          command:
+            [
+              "/cloud_sql_proxy",
+              "--dir=/cloudsql",
+              "-instances=umuzi-prod:europe-west2:prod=tcp:5432",
+              "-credential_file=/secrets/cloudsql/credentials.json",
+            ]
+          volumeMounts:
+            - name: cloudsql-oauth-credentials-djangoconf2023-wafer 
+              mountPath: /secrets/cloudsql
+              readOnly: true
+            - name: ssl-certs
+              mountPath: /etc/ssl/certs
+            - name: cloudsql-djangoconf2023-wafer 
+              mountPath: /cloudsql
+      # [END proxy_container]
+      # [START volumes]
+      volumes:
+        - name: cloudsql-oauth-credentials-djangoconf2023-wafer 
+          secret:
+            secretName: cloudsql-oauth-credentials-djangoconf2023-wafer 
+        - name: ssl-certs
+          hostPath:
+            path: /etc/ssl/certs
+        - name: cloudsql-djangoconf2023-wafer
+          emptyDir:
+
+      # [END volumes]
+# [END kubernetes_deployment]
+

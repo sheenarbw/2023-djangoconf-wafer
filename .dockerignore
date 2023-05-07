@@ -19,3 +19,7 @@ coverage.xml
 *.log
 .git
 .vscode
+node_modules/
+database/
+k8s/
+venv/

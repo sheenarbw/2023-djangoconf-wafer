@@ -9,28 +9,28 @@ ADMINS = (
     # ('Your Name', 'your_email@example.com'),
 )
 
-DATABASES = {
-    "default": {
-        "ENGINE": "django.db.backends.sqlite3",
-        "NAME": "wafer.db",
-    }
-}
+# DATABASES = {
+#     "default": {
+#         "ENGINE": "django.db.backends.sqlite3",
+#         "NAME": "wafer.db",
+#     }
+# }
 
-if os.environ.get("TESTDB", None) == "postgres":
-    # settings for running the tests
-    DATABASES["default"].update(
-        {
-            "ENGINE": "django.db.backends.postgresql_psycopg2",
-            "USER": "postgres",
-            "PASSWORD": "postgres",
-            "NAME": "wafer",
-            "HOST": "localhost",
-        }
-    )
+# if os.environ.get("TESTDB", None) == "postgres":
+#     # settings for running the tests
+#     DATABASES["default"].update(
+#         {
+#             "ENGINE": "django.db.backends.postgresql_psycopg2",
+#             "USER": "postgres",
+#             "PASSWORD": "postgres",
+#             "NAME": "wafer",
+#             "HOST": "localhost",
+#         }
+#     )
 
 # Hosts/domain names that are valid for this site; required if DEBUG is False
 # See https://docs.djangoproject.com/en/1.5/ref/settings/#allowed-hosts
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = ["*"]
 
 # Local time zone for this installation. Choices can be found here:
 # http://en.wikipedia.org/wiki/List_of_tz_zones_by_name
@@ -73,7 +73,7 @@ MEDIA_URL = "/media/"
 
 # URL prefix for static files.
 # Example: "http://example.com/static/", "http://static.example.com/"
-STATIC_URL = "/static/"
+STATIC_URL = os.environ.get("STATIC_URL", "/static/")
 
 # Additional locations of static files
 STATICFILES_DIRS = (
@@ -341,6 +341,28 @@ DEFAULT_AUTO_FIELD = "django.db.models.AutoField"
 
 DEBUG = True
 
-
 EMAIL_BACKEND = "django.core.mail.backends.filebased.EmailBackend"
 EMAIL_FILE_PATH = "gitignore/emails"
+
+
+try:
+    PROD_MODE = int(os.getenv("PROD_MODE", 0))
+except ValueError:
+    PROD_MODE = 0
+
+if PROD_MODE:
+    SECRET_KEY = os.environ["PROD_SECRET_KEY"]
+    assert len(SECRET_KEY) >= 50
+    DEBUG = False
+
+
+DATABASES = {
+    "default": {
+        "ENGINE": "django.db.backends.postgresql_psycopg2",
+        "HOST": os.getenv("SQL_HOST", "127.0.0.1"),
+        "PORT": os.getenv("SQL_PORT", 6543),
+        "NAME": os.getenv("SQL_DB", "db"),
+        "USER": os.getenv("SQL_USER", "pguser"),
+        "PASSWORD": os.getenv("SQL_PASS", "password"),
+    }
+}

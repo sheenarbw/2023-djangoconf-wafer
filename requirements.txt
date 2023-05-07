@@ -1,3 +1,4 @@
-django==4.2.1
-wafer==0.14.0
+django==3.2
+wafer
 crispy_bootstrap4
+psycopg2-binary==2.9.3

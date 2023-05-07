@@ -7,10 +7,22 @@ RUN pip install gunicorn
 ENV PYTHONUNBUFFERED 1
 RUN mkdir /code
 WORKDIR /code
+
+
+# RUN curl -o- https://raw.githubusercontent.com/nvm-sh/nvm/v0.39.3/install.sh | bash 
+# RUN nvm install node
+
+# COPY package.json /code/
+# COPY package-lock.json /code/
+# RUN npm install
+
 COPY requirements.txt /code/
 RUN pip install -r requirements.txt
-COPY . /code/
+
+
 EXPOSE 8000
 
-CMD gunicorn -b :8080 --log-level debug backend.wsgi
+COPY . /code/
+
+CMD gunicorn -b :8000 --log-level debug djangoconf.wsgi
 
