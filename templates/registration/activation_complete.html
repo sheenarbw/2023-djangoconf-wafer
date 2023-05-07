@@ -1,0 +1,17 @@
+{% extends 'wafer/base.html' %}
+{% load i18n %}
+{% block content %}
+<h1>{% trans 'Activation complete' %}</h1>
+<p>
+  {% url 'auth_login' as login_url %}
+  {% blocktrans trimmed %}
+    Your account is now activated!
+    Please <a href="{{ login_url }}">log in</a>.
+  {% endblocktrans %}
+  </p>
+  <p>
+  {% blocktrans trimmed %}
+    You can now log in and start the talk proposal process.
+  {% endblocktrans %}
+</p>
+{% endblock %}
