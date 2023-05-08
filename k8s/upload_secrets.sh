@@ -8,3 +8,8 @@ kubectl create secret generic cloudsql-djangoconf2023-wafer --from-literal=SQL_U
 
 # Misc Django secrets
 kubectl create secret generic miscbackend-djangoconf2023-wafer --from-literal=PROD_SECRET_KEY=$PROD_SECRET_KEY
+
+
+
+# SENDGRID
+kubectl create secret generic sendgrid-djangoconf2023-wafer --from-literal=SENDGRID_API_KEY=$SENDGRID_API_KEY

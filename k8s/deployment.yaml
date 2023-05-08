@@ -30,6 +30,16 @@ spec:
           # off in production.
           imagePullPolicy: Always
           env:
+            # [START email config]
+            - name: SENDGRID_API_KEY
+              valueFrom:
+                secretKeyRef:
+                  name: sendgrid-djangoconf2023-wafer 
+                  key: SENDGRID_API_KEY
+            - name: DEFAULT_FROM_EMAIL
+              value: "hello@djangocon.africa"
+            # [END email config]
+
             # [START cloudsql_secrets]
             - name: SQL_USER
               valueFrom:
@@ -49,7 +59,6 @@ spec:
 
 
 
-            # [START git misc config]
 
             - name: STATIC_URL
               value: https://storage.googleapis.com/djangoconf-wafer-collectstatic/static/
@@ -96,6 +105,8 @@ spec:
             - name: cloudsql-djangoconf2023-wafer 
               mountPath: /cloudsql
       # [END proxy_container]
+
+
       # [START volumes]
       volumes:
         - name: cloudsql-oauth-credentials-djangoconf2023-wafer 
@@ -106,7 +117,7 @@ spec:
             path: /etc/ssl/certs
         - name: cloudsql-djangoconf2023-wafer
           emptyDir:
-
+        
       # [END volumes]
 # [END kubernetes_deployment]
 

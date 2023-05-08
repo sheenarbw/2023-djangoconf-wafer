@@ -4,7 +4,7 @@ metadata:
   name: djangoconf-wafer-ingress
   annotations:
     kubernetes.io/ingress.global-static-ip-name: djangoconf-2023-wafer-ip
-    # networking.gke.io/managed-certificates: djangoconf-wafer-managed-cert
+    networking.gke.io/managed-certificates: djangoconf-wafer-managed-cert
     kubernetes.io/ingress.class: "gce"
   labels:
     app: djangoconf-wafer

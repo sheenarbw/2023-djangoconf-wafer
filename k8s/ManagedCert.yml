@@ -4,4 +4,4 @@ metadata:
   name: djangoconf-wafer-managed-cert
 spec:
   domains:
-    - xxxxxxxxxxxxx
+    - cfp-2023.djangocon.africa

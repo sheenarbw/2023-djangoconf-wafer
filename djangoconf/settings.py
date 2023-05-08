@@ -341,8 +341,19 @@ DEFAULT_AUTO_FIELD = "django.db.models.AutoField"
 
 DEBUG = True
 
-EMAIL_BACKEND = "django.core.mail.backends.filebased.EmailBackend"
-EMAIL_FILE_PATH = "gitignore/emails"
+
+SENDGRID_API_KEY = os.getenv("SENDGRID_API_KEY")
+
+if SENDGRID_API_KEY:
+    EMAIL_HOST = "smtp.sendgrid.net"
+    EMAIL_HOST_USER = "apikey"  # this is exactly the value 'apikey'
+    EMAIL_HOST_PASSWORD = SENDGRID_API_KEY
+    EMAIL_PORT = 587
+    EMAIL_USE_TLS = True
+    DEFAULT_FROM_EMAIL = os.getenv("DEFAULT_FROM_EMAIL")
+else:
+    EMAIL_BACKEND = "django.core.mail.backends.filebased.EmailBackend"
+    EMAIL_FILE_PATH = "gitignore/emails"
 
 
 try:
