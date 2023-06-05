@@ -1,3 +1,4 @@
+{% load static %}
 {% load i18n %}
 <nav class="nav navbar navbar-expand-sm d-print-none {{ WAFER_NAVIGATION_VISIBILITY }}">
   <div class="container">
@@ -11,7 +12,8 @@
     {% endblock navtogglebutton %}
 
     {% block navtitle %}
-      <a class="navbar-brand" href="{% url 'wafer_page' %}"><img src="/static/img/site/logo.svg"> 2023 TALK SUBMISSION</a>
+      <a class="navbar-brand" href="{% url 'wafer_page' %}">
+        <img src="{% static 'img/site/logo.svg' %}"> 2023 TALK SUBMISSION</a>
     {% endblock navtitle %}
 
     <div class="collapse navbar-collapse" id="wafer-navbar-collapse">
