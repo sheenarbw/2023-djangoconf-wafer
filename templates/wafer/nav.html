@@ -1,27 +1,23 @@
 {% load static %}
 {% load i18n %}
-<nav class="nav navbar navbar-expand-sm d-print-none {{ WAFER_NAVIGATION_VISIBILITY }}">
+{% load static %}
+<nav class="navbar nav navbar-light navbar-expand-lg">
   <div class="container">
-    {% block navtogglebutton %}
-      <button type="button" class="navbar-toggler navbar-toggler-right"
-              data-toggle="collapse" data-target="#wafer-navbar-collapse"
+      <a class="navbar-brand" href="{% url 'wafer_page' %}">
+          <img src="{% static 'img/site/logo.svg' %}"> 2023 TALK SUBMISSION</a>
+      <button type="button" class="navbar-toggler"
+              data-bs-toggle="collapse" data-bs-target="#wafer-navbar-collapse"
               aria-controls="wafer-navbar-collapse" aria-expanded="false"
               aria-label="Toggle navigation">
         <span class="navbar-toggler-icon"></span>
       </button>
-    {% endblock navtogglebutton %}
-
-    {% block navtitle %}
-      <a class="navbar-brand" href="{% url 'wafer_page' %}">
-        <img src="{% static 'img/site/logo.svg' %}"> 2023 TALK SUBMISSION</a>
-    {% endblock navtitle %}
 
     <div class="collapse navbar-collapse" id="wafer-navbar-collapse">
       {% block navmenulist %}
-        <ul class="navbar-nav me-auto">
+        <ul class="navbar-nav me-auto mb-2 mb-lg-0">
           {% for item in WAFER_MENUS.items %}
             {% if item.image and item.url %}
-              <li class="nav-item icon">
+              <li class="nav-item">
                 <a class="nav-link" href="{{ item.url }}" alt="{{ item.label }}">
                   <img src="{{ item.image }}" />
                 </a>
