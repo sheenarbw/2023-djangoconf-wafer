@@ -135,6 +135,14 @@ MIDDLEWARE = (
     # 'django.middleware.clickjacking.XFrameOptionsMiddleware',
 )
 
+
+# HTTPS redirects set up according to
+# https://docs.djangoproject.com/en/3.2/topics/security/#ssl-https
+SECURE_SSL_REDIRECT = True
+SESSION_COOKIE_SECURE = True
+CSRF_COOKIE_SECURE = True
+
+
 ROOT_URLCONF = "wafer.urls"
 
 # Python dotted path to the WSGI application used by Django's runserver.
