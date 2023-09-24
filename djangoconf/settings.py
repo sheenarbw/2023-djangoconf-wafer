@@ -125,7 +125,7 @@ TEMPLATES = [
 
 
 MIDDLEWARE = (
-    "django.middleware.security.SecurityMiddleware",
+    # "django.middleware.security.SecurityMiddleware",
     "django.middleware.common.CommonMiddleware",
     "django.contrib.sessions.middleware.SessionMiddleware",
     "django.middleware.csrf.CsrfViewMiddleware",
@@ -139,9 +139,9 @@ MIDDLEWARE = (
 
 # HTTPS redirects set up according to
 # https://docs.djangoproject.com/en/3.2/topics/security/#ssl-https
-SECURE_SSL_REDIRECT = True
-SESSION_COOKIE_SECURE = True
-CSRF_COOKIE_SECURE = True
+# SECURE_SSL_REDIRECT = True
+# SESSION_COOKIE_SECURE = True
+# CSRF_COOKIE_SECURE = True
 
 
 ROOT_URLCONF = "wafer.urls"
